@@ -5,8 +5,8 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -20,22 +20,53 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public List<Category> getAllCategories()
     {
-        // get all categories
-        return null;
+       String sql = "SELECT * " +
+               "FROM Category " +
+               "ORDER BY category_id;";
+
+       List<Category> categories = new ArrayList<>();
+
+       try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet row = statement.executeQuery()){
+           while (row.next()){
+               categories.add(mapRow(row));
+           }
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
+       return categories;
     }
 
     @Override
     public Category getById(int categoryId)
     {
-        // get category by id
+        String sql = "SELECT * " +
+               "FROM Category " +
+               "WHERE category_id = ?";
+
+        try (Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)){
+
+            statement.setInt(1, categoryId);
+
+            try (ResultSet row = statement.executeQuery()){
+                if (row.next())
+                {
+                    return mapRow(row);
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     @Override
     public Category create(Category category)
     {
-        // create a new category
-        return null;
+
     }
 
     @Override

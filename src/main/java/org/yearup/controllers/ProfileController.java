@@ -24,4 +24,62 @@ public class ProfileController {
         this.profileDao = profileDao;
         this.userDao = userDao;
     }
+    @GetMapping
+    @PreAuthorize("isAuthenticated()")
+    public Profile getProfile(Principal principal)
+    {
+        try
+        {
+            String username = principal.getName();
+            User user = userDao.getByUserName(username);
+
+            if (user == null)
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
+
+            int userId = user.getId();
+
+            Profile profile = profileDao.getByUserId(userId);
+
+            if (profile == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found.");
+
+            return profile;
+        }
+        catch (ResponseStatusException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
+    @PutMapping
+    @PreAuthorize("isAuthenticated()")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateProfile(@RequestBody Profile profile, Principal principal)
+    {
+        try
+        {
+            String username = principal.getName();
+            User user = userDao.getByUserName(username);
+
+            if (user == null)
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
+
+            // lock profile to the logged-in user
+            profile.setUserId(user.getId());
+
+            profileDao.update(profile);
+        }
+        catch (ResponseStatusException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
 }
+

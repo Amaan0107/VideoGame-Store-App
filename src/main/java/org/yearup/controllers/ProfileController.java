@@ -67,7 +67,7 @@ public class ProfileController {
             if (user == null)
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
 
-            // lock profile to the logged-in user
+
             profile.setUserId(user.getId());
 
             profileDao.update(profile);

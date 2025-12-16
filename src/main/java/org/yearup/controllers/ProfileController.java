@@ -59,27 +59,16 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateProfile(@RequestBody Profile profile, Principal principal)
     {
-        try
-        {
-            String username = principal.getName();
-            User user = userDao.getByUserName(username);
+        String username = principal.getName();
+        User user = userDao.getByUserName(username);
+        if (user == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
 
-            if (user == null)
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
+        profile.setUserId(user.getId());
 
-
-            profile.setUserId(user.getId());
-
-            profileDao.update(profile);
-        }
-        catch (ResponseStatusException ex)
-        {
-            throw ex;
-        }
-        catch (Exception ex)
-        {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-        }
+        boolean updated = profileDao.update(profile);
+        if (!updated)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found.");
     }
 }
 

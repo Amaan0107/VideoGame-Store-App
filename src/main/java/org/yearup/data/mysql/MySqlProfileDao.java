@@ -75,7 +75,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
     }
 
     @Override
-    public void update(Profile profile) {
+    public boolean update(Profile profile) {
         String sql = """
                 UPDATE profiles
                 SET first_name = ?
@@ -102,7 +102,8 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
             statement.setString(8, profile.getZip());
             statement.setInt(9, profile.getUserId());
 
-            statement.executeUpdate();
+            int rows = statement.executeUpdate();
+            return rows > 0;
         }
         catch (SQLException e)
         {

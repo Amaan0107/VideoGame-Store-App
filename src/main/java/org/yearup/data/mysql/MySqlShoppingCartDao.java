@@ -75,38 +75,45 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         return getByUserId(userId);
     }
 
+
     @Override
-    public ShoppingCart updateQuantity(int userId, int productId, int quantity) {
-        if (quantity <= 0) {
+    public boolean updateQuantity(int userId, int productId, int quantity)
+    {
+
+        if (quantity <= 0)
+        {
             String deleteSql = "DELETE FROM shopping_cart WHERE user_id = ? AND product_id = ?;";
             try (Connection connection = getConnection();
-                 PreparedStatement statement = connection.prepareStatement(deleteSql)) {
+                 PreparedStatement statement = connection.prepareStatement(deleteSql))
+            {
                 statement.setInt(1, userId);
                 statement.setInt(2, productId);
-                statement.executeUpdate();
-            } catch (SQLException e) {
+                return statement.executeUpdate() > 0;
+            }
+            catch (SQLException e)
+            {
                 throw new RuntimeException(e);
             }
-
-            return getByUserId(userId);
         }
         String sql = """
-                UPDATE shopping_cart
-                SET quantity = ?
-                WHERE user_id = ? AND product_id = ?;
-                """;
+            UPDATE shopping_cart
+            SET quantity = ?
+            WHERE user_id = ? AND product_id = ?;
+            """;
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql))
+        {
             statement.setInt(1, quantity);
             statement.setInt(2, userId);
             statement.setInt(3, productId);
-            statement.executeUpdate();
-        } catch (SQLException e) {
+
+            return statement.executeUpdate() > 0;
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
-
-        return getByUserId(userId);
     }
     @Override
     public void clearCart(int userId)

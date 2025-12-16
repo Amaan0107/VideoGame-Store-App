@@ -47,12 +47,81 @@ public class ShoppingCartController
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+    @PostMapping("/products/{productId}")
+    public ShoppingCart addProduct(@PathVariable int productId, Principal principal)
+    {
+        try
+        {
+            int userId = getUserId(principal);
+
+            Product product = productDao.getById(productId);
+            if (product == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+
+            return shoppingCartDao.addProduct(userId, productId);
+        }
+        catch (ResponseStatusException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
+    @PutMapping("/products/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateQuantity(@PathVariable int productId,
+                               @RequestBody ShoppingCartItem item,
+                               Principal principal) {
+        try {
+            int userId = getUserId(principal);
+
+            if (item == null || item.getQuantity() <= 0)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be > 0.");
+
+
+            boolean updated = shoppingCartDao.updateQuantity(userId, productId, item.getQuantity());
+            if (!updated)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found in cart.");
+
+
+        }
+        catch (ResponseStatusException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
+    @DeleteMapping
+    public ShoppingCart clearCart(Principal principal)
+    {
+        try
+        {
+            int userId = getUserId(principal);
+            shoppingCartDao.clearCart(userId);
+
+            return new ShoppingCart();
+        }
+        catch (ResponseStatusException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
+
     private int getUserId(Principal principal)
     {
         if (principal == null)
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-        String username = principal.getName(); // logged-in username :contentReference[oaicite:3]{index=3}
+        String username = principal.getName();
         int userId = userDao.getIdByUsername(username);
 
         if (userId <= 0)
@@ -60,18 +129,5 @@ public class ShoppingCartController
 
         return userId;
     }
-
-
-    // add a POST method to add a product to the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be added
-
-
-    // add a PUT method to update an existing product in the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
-    // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
-
-
-    // add a DELETE method to clear all products from the current users cart
-    // https://localhost:8080/cart
 
 }

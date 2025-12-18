@@ -66,7 +66,7 @@ This fix was exciting to me because it required understanding both the controlle
 ---
 
 ## Pics of the application
-<img width="1919" height="1018" alt="Screenshot 2025-12-18 095419" src="https://github.com/user-attachments/assets/6a28a664-8b04-4329-af63-d51717dbaa7c" />
+<img width="1919" height="1020" alt="Screenshot 2025-12-18 134917" src="https://github.com/user-attachments/assets/e7482e50-3bfd-4508-b44f-5a74df5663a0" />
 <img width="1917" height="1015" alt="Screenshot 2025-12-18 095440" src="https://github.com/user-attachments/assets/efcac6f0-9512-4441-9340-62d524c2430b" />
-<img width="1919" height="1014" alt="Screenshot 2025-12-18 095527" src="https://github.com/user-attachments/assets/330ac784-d081-489c-88e6-741b1524f6bc" />
+<img width="1919" height="1020" alt="Screenshot 2025-12-18 134935" src="https://github.com/user-attachments/assets/608af7cd-5e71-4f34-bbf7-f8b41360e33a" />
 

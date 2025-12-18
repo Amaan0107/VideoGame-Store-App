@@ -54,9 +54,20 @@ public class ShoppingCartController
         {
             int userId = getUserId(principal);
 
-            Product product = productDao.getById(productId);
-            if (product == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+            Product product = requireProduct(productId);
+
+            int maxAllowed = maxAllowedFor(product);
+            if (maxAllowed <= 0)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Out of stock.");
+
+            int currentQty = getCurrentQtyInCart(userId, productId);
+
+            if (currentQty >= maxAllowed) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "You can only buy up to " + maxAllowed + " of this item (limited by stock and max 3)."
+                );
+            }
 
             return shoppingCartDao.addProduct(userId, productId);
         }
@@ -73,19 +84,26 @@ public class ShoppingCartController
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateQuantity(@PathVariable int productId,
                                @RequestBody ShoppingCartItem item,
-                               Principal principal) {
-        try {
+                               Principal principal)
+    {
+        try
+        {
             int userId = getUserId(principal);
 
             if (item == null || item.getQuantity() <= 0)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be > 0.");
 
+            Product product = requireProduct(productId);
+
+            if (item.getQuantity() > 3)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Max quantity per item is 3.");
+
+            if (item.getQuantity() > product.getStock())
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity cannot exceed stock (" + product.getStock() + ").");
 
             boolean updated = shoppingCartDao.updateQuantity(userId, productId, item.getQuantity());
             if (!updated)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found in cart.");
-
-
         }
         catch (ResponseStatusException ex)
         {
@@ -128,6 +146,24 @@ public class ShoppingCartController
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
         return userId;
+    }
+    private int getCurrentQtyInCart(int userId, int productId) {
+        ShoppingCart cart = shoppingCartDao.getByUserId(userId);
+        if (cart == null || cart.getItems() == null) return 0;
+
+        ShoppingCartItem sci = cart.getItems().get(String.valueOf(productId));
+        return (sci == null) ? 0 : sci.getQuantity();
+    }
+
+    private Product requireProduct(int productId) {
+        Product product = productDao.getById(productId);
+        if (product == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        return product;
+    }
+
+    private int maxAllowedFor(Product product) {
+        return Math.min(3, product.getStock());
     }
 
 }

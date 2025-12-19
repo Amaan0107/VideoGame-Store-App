@@ -42,11 +42,19 @@ This project is a Video-Game-Store REST API for an e-commerce platform built wit
 
 ---
 
+### 📃 Order
+- Retrieves the current user’s shopping cart 
+- Creates a new record in the orders table
+- Creates a record in order_line_items for each cart item
+- Clears the shopping cart after the order is created
+
+---
+
 - ## 🧪 Testing & Validation
 - Automated API validation using Postman collections
 - All tests pass successfully (0 failures)
 <img width="1363" height="890" alt="Screenshot 2025-12-18 110805" src="https://github.com/user-attachments/assets/1b8b7bad-ea98-40ab-98dd-19eaaf000911" />
-<img width="1358" height="871" alt="Screenshot 2025-12-18 110749" src="https://github.com/user-attachments/assets/9a501c21-d4d1-4038-b210-5e4e50c3da7e" />
+<img width="888" height="883" alt="Screenshot 2025-12-19 014517" src="https://github.com/user-attachments/assets/4af8208a-1749-47b8-8ccd-984fc96addb7" />
 
 ---
 
@@ -66,7 +74,9 @@ This fix was exciting to me because it required understanding both the controlle
 ---
 
 ## Pics of the application
-<img width="1919" height="1020" alt="Screenshot 2025-12-18 134917" src="https://github.com/user-attachments/assets/e7482e50-3bfd-4508-b44f-5a74df5663a0" />
-<img width="1917" height="1015" alt="Screenshot 2025-12-18 095440" src="https://github.com/user-attachments/assets/efcac6f0-9512-4441-9340-62d524c2430b" />
-<img width="1919" height="1020" alt="Screenshot 2025-12-18 134935" src="https://github.com/user-attachments/assets/608af7cd-5e71-4f34-bbf7-f8b41360e33a" />
+<img width="1919" height="872" alt="Screenshot 2025-12-19 020404" src="https://github.com/user-attachments/assets/632e0ad0-8b0d-4069-92dd-ffa7b10eb250" />
+<img width="1915" height="875" alt="Screenshot 2025-12-19 020417" src="https://github.com/user-attachments/assets/4e51d385-c725-4c4e-8c61-6df5100fce24" />
+<img width="1919" height="865" alt="Screenshot 2025-12-19 020448" src="https://github.com/user-attachments/assets/6b40c317-cc0c-4f69-a3e4-dfc6867c607b" />
+<img width="1919" height="869" alt="Screenshot 2025-12-19 020459" src="https://github.com/user-attachments/assets/a6d76c46-d979-4290-ac62-942c3f50bcf0" />
+
 

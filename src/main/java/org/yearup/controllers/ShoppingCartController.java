@@ -151,7 +151,7 @@ public class ShoppingCartController
         ShoppingCart cart = shoppingCartDao.getByUserId(userId);
         if (cart == null || cart.getItems() == null) return 0;
 
-        ShoppingCartItem sci = cart.getItems().get(String.valueOf(productId));
+        ShoppingCartItem sci = cart.getItems().get(productId);
         return (sci == null) ? 0 : sci.getQuantity();
     }
 

@@ -53,8 +53,9 @@ This project is a Video-Game-Store REST API for an e-commerce platform built wit
 - ## 🧪 Testing & Validation
 - Automated API validation using Postman collections
 - All tests pass successfully (0 failures)
-<img width="1363" height="890" alt="Screenshot 2025-12-18 110805" src="https://github.com/user-attachments/assets/1b8b7bad-ea98-40ab-98dd-19eaaf000911" />
-<img width="879" height="899" alt="Screenshot 2025-12-19 083242" src="https://github.com/user-attachments/assets/98e348d2-c9dd-477a-891e-f3ff173ac51c" />
+
+<img width="879" height="899" alt="Screenshot 2025-12-19 083242" src="https://github.com/user-attachments/assets/ea10f16e-957d-4033-b22f-54cec6a9c65f" />
+<img width="882" height="872" alt="Screenshot 2025-12-19 075646" src="https://github.com/user-attachments/assets/f16ea7bf-350a-4ba5-9348-3d184162a16e" />
 
 
 

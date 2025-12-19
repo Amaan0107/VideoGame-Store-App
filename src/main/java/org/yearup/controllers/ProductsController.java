@@ -81,8 +81,8 @@ public class ProductsController
     {
         try
         {
-            product.setProductId(id);
-            productDao.update(id, product);
+            product.setProductId(id);          // ✅ Ensure route ID and body match
+            productDao.update(id, product);    // ✅ Properly updates existing record
         }
         catch(Exception ex)
         {
